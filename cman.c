@@ -9,11 +9,13 @@ int main(int argc, char *argv[]) {
 	int x = 0, y = 0;
 	int max_y = 0, max_x = 0;
 	int delta_x = 0, delta_y = 0;
-	int next_x = 0;
-	char direction = 'n'; /*u, d, l, r, n | up down left right none */
+	int next_x = 0, next_y = 0;
+	char direction = 'l'; /*u, d, l, r, n | up down left right none */
 
 	initscr();
+	cbreak();
 	noecho();
+	nodelay(stdscr, TRUE);
 	curs_set(FALSE);
 
 
@@ -22,12 +24,14 @@ int main(int argc, char *argv[]) {
 		getmaxyx(stdscr, max_y, max_x);
 		clear();
 
+		/*
 		printw("c");
 		wprintw(stdscr, "x");
+		*/
 		mvprintw(y, x, "o");
 		refresh();
-
 		usleep(DELAY);
+
 
 		direction = kbread();
 
@@ -49,13 +53,17 @@ int main(int argc, char *argv[]) {
 		}
 
 		next_x = x + delta_x;
-		if (next_x >= max_x || next_x < 0) {
-			direction *= -1;
-		} else {
-			x+= direction;
+		next_y = y + delta_y;
+
+		if (next_x >= max_x || next_y >= max_y || next_x < 0 || next_y < 0) {
+			next_x = x + 0;
+			next_y = y + 0;
 		}
 
+		x = next_x;
+		y = next_y;
 	}
+
 
 	endwin();
 	return 0;
@@ -65,7 +73,7 @@ char kbread(){
 	int ch = getch();
 	if (ch != ERR) {
 		ungetch(ch);
-		switch (getch()){
+		switch (ch){
 			case 107: /* 'k' - up */
 				return 'u';
 			case 106: /* 'j' - down */
