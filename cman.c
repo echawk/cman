@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #define DELAY 30000
 
@@ -7,8 +8,8 @@ int kbhit(void);
 char detdir(char ch);
 void update_delts(int *dx, int *dy, char direction);
 void update_player_s(char **player_s, char direction);
-void print_hwall(int sx, int ex, int y, char *wall_s);
-void print_vwall(int sy, int ey, int x, char *wall_s);
+void print_hwall(int sx, int ex, int y, char wall_c);
+void print_vwall(int sy, int ey, int x, char wall_c);
 
 int main(int argc, char *argv[]) {
 	int x = 0,
@@ -24,6 +25,7 @@ int main(int argc, char *argv[]) {
 	char *player_s = "o";
 
 	char *wall_s = "#";
+	char wall_c = '#';
 
 	initscr();
 	cbreak();
@@ -37,9 +39,13 @@ int main(int argc, char *argv[]) {
 		/* setup stuff */
 
 		clear();
+		//refresh();
 		mvprintw(y, x, player_s);
-		print_hwall(0, 5, 1, wall_s);
-		refresh();
+		//box(stdscr, 0, 0);
+
+		mvprintw(2, 0, "#####");
+		mvprintw(10, 5, "#####");
+		wrefresh(stdscr);
 
 		usleep(DELAY);
 		if (kbhit()) {
@@ -66,14 +72,20 @@ int main(int argc, char *argv[]) {
 }
 
 
-void print_hwall(int sx, int ex, int y, char *wall_s) {
+void print_hwall(int sx, int ex, int y, char wall_c) {
 	int i = 0;
-	while (i < sx - ex) {
-		mvprintw(y, sx + i, wall_s);
+	int diff = ex - sx;
+	char *wall_s = (char*) malloc(diff * sizeof(char));
+	if (wall_s == NULL)
+		exit(1);
+	while (i < diff) {
+		wall_s[i] = wall_c;
 	}
+	mvprintw(y, sx, wall_s);
+	free(wall_s);
 }
 
-void print_vwall(int sy, int ey, int x, char *wall_s) {
+void print_vwall(int sy, int ey, int x, char wall_c) {
 
 }
 
