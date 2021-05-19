@@ -6,6 +6,9 @@
 int kbhit(void);
 char detdir(char ch);
 void update_delts(int *dx, int *dy, char direction);
+void update_player_s(char **player_s, char direction);
+void print_hwall(int sx, int ex, int y, char *wall_s);
+void print_vwall(int sy, int ey, int x, char *wall_s);
 
 int main(int argc, char *argv[]) {
 	int x = 0,
@@ -17,6 +20,10 @@ int main(int argc, char *argv[]) {
 	int next_x = 0,
 			next_y = 0;
 	char direction = 'l'; /*u, d, l, r, n | up down left right none */
+
+	char *player_s = "o";
+
+	char *wall_s = "#";
 
 	initscr();
 	cbreak();
@@ -30,7 +37,8 @@ int main(int argc, char *argv[]) {
 		/* setup stuff */
 
 		clear();
-		mvprintw(y, x, "o");
+		mvprintw(y, x, player_s);
+		print_hwall(0, 5, 1, wall_s);
 		refresh();
 
 		usleep(DELAY);
@@ -38,7 +46,7 @@ int main(int argc, char *argv[]) {
 			char ch = getch();
 			direction = detdir(ch);
 		}
-
+		update_player_s(&player_s, direction);
 		update_delts(&delta_x, &delta_y, direction);
 
 		next_x = x + delta_x;
@@ -55,6 +63,38 @@ int main(int argc, char *argv[]) {
 
 	endwin();
 	return 0;
+}
+
+
+void print_hwall(int sx, int ex, int y, char *wall_s) {
+	int i = 0;
+	while (i < sx - ex) {
+		mvprintw(y, sx + i, wall_s);
+	}
+}
+
+void print_vwall(int sy, int ey, int x, char *wall_s) {
+
+}
+
+void update_player_s(char **player_s, char direction) {
+	switch(direction) {
+		case 'u':
+			*player_s = "v";
+			break;
+		case 'd':
+			*player_s = "^";
+			break;
+		case 'r':
+			*player_s = "<";
+			break;
+		case 'l':
+			*player_s = ">";
+			break;
+		default:
+			*player_s = "o";
+			break;
+	}
 }
 
 void update_delts(int *dx, int *dy, char direction) {
