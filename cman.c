@@ -4,6 +4,8 @@
 
 #define DELAY 30000
 
+/* TODO: move the helper functions to their own header file */
+
 int kbhit(void);
 char detdir(char ch);
 void update_delts(int *dx, int *dy, char direction);
@@ -44,6 +46,7 @@ int main(int argc, char *argv[]) {
 		//box(stdscr, 0, 0);
 
 		mvprintw(2, 0, "#####");
+		mvprintw(10, 0, "#####");
 		mvprintw(10, 5, "#####");
 		wrefresh(stdscr);
 
@@ -89,6 +92,8 @@ void print_vwall(int sy, int ey, int x, char wall_c) {
 
 }
 
+/* TODO: merge the update_player_s and update_delts functions */
+
 void update_player_s(char **player_s, char direction) {
 	switch(direction) {
 		case 'u':
@@ -132,6 +137,7 @@ void update_delts(int *dx, int *dy, char direction) {
 	}
 }
 
+/* determines the direction the player should be moving, based on a keypress */
 char detdir(char ch){
 	switch (ch){
 		case 107: /* 'k' - up */
@@ -147,6 +153,7 @@ char detdir(char ch){
 	}
 }
 
+/* returns 1 if a key was pressed, 0 otherwise */
 int kbhit(){
 	int ch = getch();
 	if (ch != ERR) {
