@@ -5,6 +5,7 @@
 
 int kbhit(void);
 char detdir(char ch);
+void update_delts(int *dx, int *dy, char direction);
 
 int main(int argc, char *argv[]) {
 	int x = 0,
@@ -33,32 +34,12 @@ int main(int argc, char *argv[]) {
 		refresh();
 
 		usleep(DELAY);
-
 		if (kbhit()) {
 			char ch = getch();
 			direction = detdir(ch);
 		}
 
-		switch(direction) {
-			case 'u':
-				delta_x = 0;
-				delta_y = -1;
-				break;
-			case 'd':
-				delta_x = 0;
-				delta_y = 1;
-				break;
-			case 'r':
-				delta_x = 1;
-				delta_y = 0;
-				break;
-			case 'l':
-				delta_x = -1;
-				delta_y = 0;
-				break;
-			default:
-				break;
-		}
+		update_delts(&delta_x, &delta_y, direction);
 
 		next_x = x + delta_x;
 		next_y = y + delta_y;
@@ -74,6 +55,29 @@ int main(int argc, char *argv[]) {
 
 	endwin();
 	return 0;
+}
+
+void update_delts(int *dx, int *dy, char direction) {
+	switch(direction) {
+		case 'u':
+			*dx = 0;
+			*dy = -1;
+			break;
+		case 'd':
+			*dx = 0;
+			*dy = 1;
+			break;
+		case 'r':
+			*dx = 1;
+			*dy = 0;
+			break;
+		case 'l':
+			*dx = -1;
+			*dy = 0;
+			break;
+		default:
+			break;
+	}
 }
 
 char detdir(char ch){
