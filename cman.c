@@ -4,6 +4,7 @@
 #define DELAY 30000
 
 int kbhit(void);
+char detdir(char ch);
 
 int main(int argc, char *argv[]) {
 	int x = 0,
@@ -35,24 +36,7 @@ int main(int argc, char *argv[]) {
 
 		if (kbhit()) {
 			char ch = getch();
-			printw("Got %c", ch);
-			switch (ch){
-				case 107: /* 'k' - up */
-					direction = 'u';
-					break;
-				case 106: /* 'j' - down */
-					direction = 'd';
-					break;
-				case 108: /* 'l' - right */
-					direction = 'r';
-					break;
-				case 104: /* 'h' - left */
-					direction = 'l';
-					break;
-				default:
-					direction = direction;
-					break;
-			}
+			direction = detdir(ch);
 		}
 
 		switch(direction) {
@@ -90,6 +74,21 @@ int main(int argc, char *argv[]) {
 
 	endwin();
 	return 0;
+}
+
+char detdir(char ch){
+	switch (ch){
+		case 107: /* 'k' - up */
+			return 'u';
+		case 106: /* 'j' - down */
+			return 'd';
+		case 108: /* 'l' - right */
+			return 'r';
+		case 104: /* 'h' - left */
+			return 'l';
+		default:
+			return 'n';
+	}
 }
 
 int kbhit(){
