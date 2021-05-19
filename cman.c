@@ -3,6 +3,8 @@
 
 #define DELAY 30000
 
+char kbread();
+
 int main(int argc, char *argv[]) {
 	int x = 0, y = 0;
 	int max_y = 0, max_x = 0;
@@ -27,6 +29,8 @@ int main(int argc, char *argv[]) {
 
 		usleep(DELAY);
 
+		direction = kbread();
+
 		switch(direction) {
 			case 'u':
 				delta_x = 0;
@@ -43,8 +47,8 @@ int main(int argc, char *argv[]) {
 			default:
 				break;
 		}
-		getch();
-		next_x = x + direction;
+
+		next_x = x + delta_x;
 		if (next_x >= max_x || next_x < 0) {
 			direction *= -1;
 		} else {
@@ -55,4 +59,22 @@ int main(int argc, char *argv[]) {
 
 	endwin();
 	return 0;
+}
+
+char kbread(){
+	int ch = getch();
+	if (ch != ERR) {
+		ungetch(ch);
+		switch (getch()){
+			case 107: /* 'k' - up */
+				return 'u';
+			case 106: /* 'j' - down */
+				return 'd';
+			case 104: /* 'h' - left */
+				return 'l';
+			case 108: /* 'l' - right */
+				return 'r';
+		}
+	}
+	return 'e'; /* 'e' for error */
 }
