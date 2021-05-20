@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #define DELAY 30000
+#define NUMPOWERPELLETS 10
 
 /* TODO: move the helper functions to their own header file */
 
@@ -12,6 +13,7 @@ void update_delts(int *dx, int *dy, char direction);
 void update_player_s(char **player_s, char direction);
 void print_hwall(int sx, int ex, int y, char wall_c);
 void print_vwall(int sy, int ey, int x, char wall_c);
+void spawn_power_pellets(int ymax, int xmax);
 
 int main(int argc, char *argv[]) {
 	int x = 0,
@@ -74,6 +76,14 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
+void gen_power_pellet_coords(int ymax, int xmax) {
+	int i = 0;
+	int x, y;
+	for (i = 0; i < NUMPOWERPELLETS; i++) {
+		y = (int) rand() % ymax;
+		x = (int) rand() % xmax;
+	}
+}
 
 void print_hwall(int sx, int ex, int y, char wall_c) {
 	int i = 0;
