@@ -37,3 +37,13 @@ typedef struct entity_list {
 	entity_list_node_t *head;
 } entity_list_t;
 
+
+/*
+	we also need to define functions to add/remove members from a list
+	since we are using a singly linked list, this requires moving around
+	pointers
+*/
+
+void remove_entity_from_list(entity_list_t *l, entity_t *entity);
+void add_entity_to_list(entity_list_t *l, entity_t *entity);
+
