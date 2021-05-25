@@ -1,4 +1,4 @@
-#include "game_types.h"
+#include "game_objs.h"
 
 void remove_entity_from_list(entity_list_t *l, entity_t *entity) {
 
@@ -6,7 +6,7 @@ void remove_entity_from_list(entity_list_t *l, entity_t *entity) {
 }
 
 void add_entity_to_list(entity_list_t *l, entity_t *entity) {
-	entity_t* current_head = l.head;
+	entity_t* current_head = l->head;
 	l->head = entity;
 	l->head->next = current_head;
 	return;
