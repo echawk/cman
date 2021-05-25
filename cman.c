@@ -2,6 +2,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include "game_objs.h"
+
 #define DELAY 30000
 #define NUMPOWERPELLETS 10
 
