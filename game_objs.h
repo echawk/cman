@@ -19,14 +19,6 @@
 	since the size is likely to be quite small (less than 1000), and the ease of implementation.
 */
 
-#define EMEMY_CHAR 'e'
-#define WALL_CHAR 'w'
-#define PILL_CHAR 'p'
-
-#define ENEMY_ICON '@'
-#define WALL_ICON '#'
-#define PILL_ICON '*'
-
 
 typedef struct entity {
 	int x;

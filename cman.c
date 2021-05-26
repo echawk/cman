@@ -8,13 +8,13 @@
 #define NUMPOWERPELLETS 10
 
 
-#define EMEMY_CHAR 'e'
-#define WALL_CHAR 'w'
-#define PILL_CHAR 'p'
+#define EMEMY_CHAR e
+#define WALL_CHAR w
+#define PILL_CHAR p
 
-#define ENEMY_ICON '@'
-#define WALL_ICON '#'
-#define PILL_ICON '*'
+#define ENEMY_ICON @
+#define WALL_ICON #
+#define PILL_ICON *
 
 /* TODO: move the helper functions to their own header file */
 
@@ -40,10 +40,12 @@ int main(int argc, char *argv[]) {
 	char *player_s = "o";
 
 	/* Create the lists for the entities */
-	entity_list_T walls = NULL;
-	entity_list_T enemies = NULL;
-	entity_list_T powerpills = NULL;
-
+	entity_list_T *walls = (entity_list_T *) malloc(sizeof(entity_list_T));
+	entity_list_T *enemies = (entity_list_T *) malloc(sizeof(entity_list_T));
+	entity_list_T *powerpills = (entity_list_T *) malloc(sizeof(entity_list_T));
+	walls->head = NULL;
+	enemies->head = NULL;
+	powerpills->head = NULL;
 
 	initscr();
 	cbreak();
@@ -53,7 +55,7 @@ int main(int argc, char *argv[]) {
 
 	getmaxyx(stdscr, max_y, max_x);
 
-	init_entity_list_values(&powerpills, PILL_CHAR, max_y, max_x);
+	init_entity_list_values(powerpills, 'p', max_y, max_x);
 
 	/*
 	Now that we have the max coordinates, we can now fill our
@@ -98,22 +100,14 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-void gen_power_pellet_coords(int ymax, int xmax) {
-	int i = 0;
-	int x, y;
-	for (i = 0; i < NUMPOWERPELLETS; i++) {
-		y = (int) rand() % ymax;
-		x = (int) rand() % xmax;
-	}
-}
 
 void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int max_x) {
 	switch (entity_c) {
-		case ENEMY_CHAR:
+		case 'e':
 			break;
-		case WALL_CHAR:
+		case 'w':
 			break;
-		case PILL_CHAR:
+		case 'p':
 			init_pill_list(list, max_y, max_x);
 			break;
 		default:
@@ -131,11 +125,12 @@ void init_pill_list(entity_list_T *list, int max_y, int max_x) {
 		entity_list_node_T* new = (entity_list_node_T*) malloc(sizeof(entity_list_node_T));
 		if (new == NULL)
 			exit(1);
-		new->value.x =  (int) rand() % max_x;
-		new->value.y =  (int) rand() % max_y;
-		new->value.icon = PILL_ICON;
-		new->value.type = PILL_CHAR;
+		new->value.x = (int) rand() % max_x;
+		new->value.y = (int) rand() % max_y;
+		new->value.icon = '*';
+		new->value.type = 'p';
 		add_entity_to_list(list, new);
+		fprintf(stderr, "LOG: Added Power Pellet with x:%d and y:%d\n", new->value.x, new->value.y); /* LOG */
 		new = NULL;
 	}
 }
