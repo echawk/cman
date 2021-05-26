@@ -24,18 +24,18 @@ typedef struct entity {
 	int y;
 	char icon;
 	char type;
-} entity_t;
+} entity_T;
 
 
 typedef struct entity_list_node {
-	entity_t *next;
-	entity_t value;
-} entity_list_node_t;
+	struct entity_list_node *next;
+	entity_T value;
+} entity_list_node_T;
 
 
 typedef struct entity_list {
-	entity_list_node_t *head;
-} entity_list_t;
+	entity_list_node_T *head;
+} entity_list_T;
 
 
 /*
@@ -44,6 +44,6 @@ typedef struct entity_list {
 	pointers
 */
 
-void remove_entity_from_list(entity_list_t *l, entity_t *entity);
-void add_entity_to_list(entity_list_t *l, entity_t *entity);
+void remove_entity_from_list(entity_list_T *l, entity_list_node_T *entity);
+void add_entity_to_list(entity_list_T *l, entity_list_node_T *entity);
 
