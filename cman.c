@@ -25,6 +25,9 @@ void update_player_s(char **player_s, char direction);
 void print_hwall(int sx, int ex, int y, char wall_c);
 void print_vwall(int sy, int ey, int x, char wall_c);
 void spawn_power_pellets(int ymax, int xmax);
+void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int max_x);
+void init_pill_list(entity_list_T *list, int max_y, int max_x);
+void init_wall_list(entity_list_T *list, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
 	int x = 0,
@@ -38,6 +41,9 @@ int main(int argc, char *argv[]) {
 	char direction = 'l'; /*u, d, l, r, n | up down left right none */
 
 	char *player_s = "o";
+
+	entity_list_node_T *temp = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
+	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 
 	/* Create the lists for the entities */
 	entity_list_T *walls = (entity_list_T *) malloc(sizeof(entity_list_T));
@@ -68,13 +74,21 @@ int main(int argc, char *argv[]) {
 		/* setup stuff */
 
 		clear();
-		//refresh();
 		mvprintw(y, x, player_s);
-		//box(stdscr, 0, 0);
-
+		/*
+		refresh();
+		box(stdscr, 0, 0);
 		mvprintw(2, 0, "#####");
 		mvprintw(10, 0, "#####");
 		mvprintw(10, 5, "#####");
+		*/
+		/* Print our walls...*/
+		temp = walls->head;
+		do {
+			mvprintw(temp->value.y, temp->value.x, "#");
+			temp2 = temp->next;
+			temp = temp2;
+		} while (temp->next != NULL);
 		wrefresh(stdscr);
 
 		usleep(DELAY);
