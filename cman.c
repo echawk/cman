@@ -89,6 +89,12 @@ int main(int argc, char *argv[]) {
 			temp2 = temp->next;
 			temp = temp2;
 		} while (temp->next != NULL);
+		temp = powerpills->head;
+		do {
+			mvprintw(temp->value.y, temp->value.x, "*");
+			temp2 = temp->next;
+			temp = temp2;
+		} while (temp->next != NULL);
 		wrefresh(stdscr);
 
 		usleep(DELAY);
