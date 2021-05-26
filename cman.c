@@ -7,6 +7,15 @@
 #define DELAY 30000
 #define NUMPOWERPELLETS 10
 
+
+#define EMEMY_CHAR 'e'
+#define WALL_CHAR 'w'
+#define PILL_CHAR 'p'
+
+#define ENEMY_ICON '@'
+#define WALL_ICON '#'
+#define PILL_ICON '*'
+
 /* TODO: move the helper functions to their own header file */
 
 int kbhit(void);
@@ -30,8 +39,11 @@ int main(int argc, char *argv[]) {
 
 	char *player_s = "o";
 
-	char *wall_s = "#";
-	char wall_c = '#';
+	/* Create the lists for the entities */
+	entity_list_T walls = NULL;
+	entity_list_T enemies = NULL;
+	entity_list_T powerpills = NULL;
+
 
 	initscr();
 	cbreak();
@@ -40,6 +52,14 @@ int main(int argc, char *argv[]) {
 	curs_set(FALSE);
 
 	getmaxyx(stdscr, max_y, max_x);
+
+	init_entity_list_values(&powerpills, PILL_CHAR, max_y, max_x);
+
+	/*
+	Now that we have the max coordinates, we can now fill our
+	lists of entities
+	*/
+
 
 	while(1) {
 		/* setup stuff */
@@ -87,21 +107,37 @@ void gen_power_pellet_coords(int ymax, int xmax) {
 	}
 }
 
-void print_hwall(int sx, int ex, int y, char wall_c) {
-	int i = 0;
-	int diff = ex - sx;
-	char *wall_s = (char*) malloc(diff * sizeof(char));
-	if (wall_s == NULL)
-		exit(1);
-	while (i < diff) {
-		wall_s[i] = wall_c;
+void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int max_x) {
+	switch (entity_c) {
+		case ENEMY_CHAR:
+			break;
+		case WALL_CHAR:
+			break;
+		case PILL_CHAR:
+			init_pill_list(list, max_y, max_x);
+			break;
+		default:
+			break;
 	}
-	mvprintw(y, sx, wall_s);
-	free(wall_s);
 }
 
-void print_vwall(int sy, int ey, int x, char wall_c) {
-
+void init_pill_list(entity_list_T *list, int max_y, int max_x) {
+	int i = 0;
+	int x, y;
+	/* if the list is not empty, return */
+	if (list->head != NULL)
+		return;
+	for (i = 0; i < NUMPOWERPELLETS; i++) {
+		entity_list_node_T* new = (entity_list_node_T*) malloc(sizeof(entity_list_node_T));
+		if (new == NULL)
+			exit(1);
+		new->value.x =  (int) rand() % max_x;
+		new->value.y =  (int) rand() % max_y;
+		new->value.icon = PILL_ICON;
+		new->value.type = PILL_CHAR;
+		add_entity_to_list(list, new);
+		new = NULL;
+	}
 }
 
 /* TODO: merge the update_player_s and update_delts functions */
