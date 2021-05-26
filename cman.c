@@ -6,7 +6,7 @@
 
 #define DELAY 30000
 #define NUMPOWERPELLETS 10
-
+#define NUMWALLS 200
 
 #define EMEMY_CHAR e
 #define WALL_CHAR w
@@ -56,6 +56,7 @@ int main(int argc, char *argv[]) {
 	getmaxyx(stdscr, max_y, max_x);
 
 	init_entity_list_values(powerpills, 'p', max_y, max_x);
+	init_entity_list_values(walls, 'w', max_y, max_x);
 
 	/*
 	Now that we have the max coordinates, we can now fill our
@@ -106,6 +107,7 @@ void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int 
 		case 'e':
 			break;
 		case 'w':
+			init_wall_list(list, max_y, max_x);
 			break;
 		case 'p':
 			init_pill_list(list, max_y, max_x);
@@ -117,7 +119,6 @@ void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int 
 
 void init_pill_list(entity_list_T *list, int max_y, int max_x) {
 	int i = 0;
-	int x, y;
 	/* if the list is not empty, return */
 	if (list->head != NULL)
 		return;
@@ -134,6 +135,26 @@ void init_pill_list(entity_list_T *list, int max_y, int max_x) {
 		new = NULL;
 	}
 }
+
+void init_wall_list(entity_list_T *list, int max_y, int max_x) {
+	int i = 0;
+	if (list->head != NULL)
+		return;
+	for (i = 0; i < NUMWALLS; i++) {
+		entity_list_node_T* new = (entity_list_node_T*) malloc(sizeof(entity_list_node_T));
+		if (new == NULL)
+			exit(1);
+		new->value.x = (int) rand() % max_x;
+		new->value.y = (int) rand() % max_y;
+		new->value.icon = '#';
+		new->value.type = 'w';
+		add_entity_to_list(list, new);
+		fprintf(stderr, "LOG: Added Wall with x:%d and y:%d\n", new->value.x, new->value.y); /* LOG */
+		new = NULL;
+	}
+
+}
+
 
 /* TODO: merge the update_player_s and update_delts functions */
 
