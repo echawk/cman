@@ -115,6 +115,7 @@ void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *n
 					break;
 				case PILL_T:
 					*score = *score + 10;
+					remove_entity_from_list(list, temp);
 #ifdef LOG
 					fprintf(stderr, "LOG: Score:%d\n", score);
 #endif
