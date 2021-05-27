@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "game_objs.h"
 
@@ -67,8 +68,8 @@ int main(int argc, char *argv[]) {
 
 	getmaxyx(stdscr, max_y, max_x);
 
-	init_entity_list_values(powerpills, PILL_CHAR, max_y, max_x);
-	init_entity_list_values(walls, WALL_CHAR, max_y, max_x);
+	init_entity_list(powerpills, PILL_CHAR, PILL_ICON, max_y, max_x);
+	init_entity_list(walls, WALL_CHAR, WALL_ICON, max_y, max_x);
 
 	/*
 	Now that we have the max coordinates, we can now fill our
@@ -151,6 +152,41 @@ void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int 
 		default:
 			break;
 	}
+}
+
+
+void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x){
+	int i = 0;
+	int number_entities = 0;
+	char desc[20];
+	switch (type) {
+		case PILL_CHAR:
+			number_entities = NUMPOWERPELLETS;
+			strcpy(desc, "Power Pill");
+			break;
+		case WALL_CHAR:
+			number_entities = NUMWALLS;
+			strcpy(desc, "Wall");
+			break;
+		default:
+			break;
+	}
+	/* if the list is not empty, return */
+	if (list->head != NULL)
+		return;
+	for (i = 0; i < number_entities; i++) {
+		entity_list_node_T* new = (entity_list_node_T*) malloc(sizeof(entity_list_node_T));
+		if (new == NULL)
+			exit(1);
+		new->value.x = (int) rand() % max_x;
+		new->value.y = (int) rand() % max_y;
+		new->value.icon = icon;
+		new->value.type = type;
+		add_entity_to_list(list, new);
+		fprintf(stderr, "LOG: Added %s with x:%d and y:%d\n", desc, new->value.x, new->value.y); /* LOG */
+		new = NULL;
+	}
+
 }
 
 /* TODO: refactor; merge init_pill_list and init_wall list, get rid of init_entity_list_values */
