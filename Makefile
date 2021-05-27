@@ -2,7 +2,7 @@
 .PHONY: clean test
 CC=gcc
 LDFLAGS:=$(LDFLAGS) -lncurses
-CFLAGS:=$(CFLAGS) -std=c99 -Wall -pedantic
+CFLAGS:=$(CFLAGS) -std=c89 -Wall -pedantic
 SRCS=$(wildcard *.c)
 OBJS=$(SRCS:.c=.o)
 TARGET=cman
