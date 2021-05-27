@@ -12,9 +12,9 @@
 #include <string.h>
 #endif
 
-const char EMEMY_CHAR = 'e';
-const char WALL_CHAR  = 'w';
-const char PILL_CHAR  = 'p';
+#define ENEMY_T 0
+#define WALL_T  1
+#define PILL_T  2
 
 const char EMEMY_ICON = '@';
 const char WALL_ICON  = '#';
@@ -27,7 +27,7 @@ char detdir(char ch);
 void update_delts(int *dx, int *dy, char direction);
 void update_player_s(char **player_s, char direction);
 void spawn_power_pellets(int ymax, int xmax);
-void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x);
+void init_entity_list(entity_list_T *list, int type, char icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
 	int x       = 0, y       = 0;
@@ -66,8 +66,8 @@ int main(int argc, char *argv[]) {
 	lists of entities
 	*/
 
-	init_entity_list(powerpills, PILL_CHAR, PILL_ICON, max_y, max_x);
-	init_entity_list(walls,      WALL_CHAR, WALL_ICON, max_y, max_x);
+	init_entity_list(powerpills, PILL_T, PILL_ICON, max_y, max_x);
+	init_entity_list(walls,      WALL_T, WALL_ICON, max_y, max_x);
 
 	while(1) {
 		/* setup stuff */
@@ -125,20 +125,20 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x){
+void init_entity_list(entity_list_T *list, int type, char icon, int max_y, int max_x){
 	int i = 0;
 	int number_entities = 0;
 #ifdef LOG
 	char desc[20];
 #endif
 	switch (type) {
-		case PILL_CHAR:
+		case PILL_T:
 			number_entities = NUMPOWERPELLETS;
 #ifdef LOG
 			strcpy(desc, "Power Pill");
 #endif
 			break;
-		case WALL_CHAR:
+		case WALL_T:
 			number_entities = NUMWALLS;
 #ifdef LOG
 			strcpy(desc, "Wall");
