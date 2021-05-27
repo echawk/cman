@@ -111,23 +111,21 @@ void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *n
 	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 	temp = list->head;
 	do {
-		switch (temp->value.type) {
-			case WALL_T:
-				if (*nx == temp->value.x && *ny == temp->value.y) {
+		if (*nx == temp->value.x && *ny == temp->value.y) {
+			switch (temp->value.type) {
+				case WALL_T:
 					*nx = player->x + 0;
 					*ny = player->y + 0;
-				}
-				break;
-			case PILL_T:
-				if (*nx == temp->value.x && *ny == temp->value.y) {
+					break;
+				case PILL_T:
 					*score = *score + 10;
 #ifdef LOG
-				fprintf(stderr, "LOG: Score:%d\n", score);
+					fprintf(stderr, "LOG: Score:%d\n", score);
 #endif
-				}
-				break;
-			default:
-				break;
+					break;
+				default:
+					break;
+			}
 		}
 		mvprintw(temp->value.y, temp->value.x, temp->value.icon);
 		temp2 = temp->next;
