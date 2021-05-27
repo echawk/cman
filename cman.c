@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "game_objs.h"
 
@@ -42,6 +43,10 @@ int main(int argc, char *argv[]) {
 
 	char *player_s = "o";
 
+	time_t t; /* used for srand */
+
+	int score = 0; /* player score */
+
 	entity_list_node_T *temp = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 
@@ -53,6 +58,7 @@ int main(int argc, char *argv[]) {
 	enemies->head = NULL;
 	powerpills->head = NULL;
 
+	srand((unsigned) time(&t));
 	initscr();
 	cbreak();
 	noecho();
@@ -93,6 +99,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		/* Print our walls...*/
+		/* TODO: refactor; see if these two can be meaningfully merged */
 		temp = walls->head;
 		do {
 			if (next_x == temp->value.x && next_y == temp->value.y) {
@@ -103,11 +110,12 @@ int main(int argc, char *argv[]) {
 			temp2 = temp->next;
 			temp = temp2;
 		} while (temp->next != NULL);
+
 		temp = powerpills->head;
 		do {
 			if (next_x == temp->value.x && next_y == temp->value.y) {
-				next_x = x + 0;
-				next_y = y + 0;
+				score = score + 10;
+				fprintf(stderr, "LOG: Score:%d\n", score); /* LOG */
 			}
 			mvprintw(temp->value.y, temp->value.x, "*");
 			temp2 = temp->next;
@@ -145,6 +153,7 @@ void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int 
 	}
 }
 
+/* TODO: refactor; merge init_pill_list and init_wall list, get rid of init_entity_list_values */
 void init_pill_list(entity_list_T *list, int max_y, int max_x) {
 	int i = 0;
 	/* if the list is not empty, return */
