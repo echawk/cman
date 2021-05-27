@@ -1,9 +1,13 @@
 #include "game_objs.h"
 #include <stddef.h>
+#include <stdlib.h>
+
 void remove_entity_from_list(entity_list_T *l, entity_list_node_T *entity) {
 	entity_list_node_T* curr = l->head;
 	entity_list_node_T* next = curr->next;
 	entity_list_node_T* prev = curr;
+	if (l->head == NULL)
+		return;
 	if (curr == entity) {
 		l->head = next;
 		free(curr);

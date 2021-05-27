@@ -103,8 +103,10 @@ int main(int argc, char *argv[]) {
 }
 
 void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx) {
-	entity_list_node_T *temp = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
+	entity_list_node_T *temp  = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
+	if (list->head == NULL)
+		return;
 	temp = list->head;
 	do {
 		if (*nx == temp->value.x && *ny == temp->value.y) {
@@ -125,8 +127,10 @@ void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *n
 			}
 		}
 		mvprintw(temp->value.y, temp->value.x, temp->value.icon);
-		temp2 = temp->next;
-		temp = temp2;
+		if (temp->next != NULL) {
+			temp2 = temp->next;
+			temp = temp2;
+		}
 	} while (temp->next != NULL);
 	temp = NULL;
 	temp2 = NULL;
