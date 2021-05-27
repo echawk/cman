@@ -7,3 +7,6 @@ Implement some type of ghost enemies; write a different AI for
 each of them.
 
 Add in color support; ncurses has a way to do this?
+
+Use pthreads and sockets to make the game multithreaded; this will
+require some substantial effort.
