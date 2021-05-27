@@ -103,21 +103,22 @@ int main(int argc, char *argv[]) {
 }
 
 void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx) {
-	entity_list_node_T *temp  = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
-	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
+	entity_list_node_T *node  = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
+	entity_list_node_T *node2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 	if (list->head == NULL)
 		return;
-	temp = list->head;
+	node = list->head;
 	do {
-		if (*nx == temp->value.x && *ny == temp->value.y) {
-			switch (temp->value.type) {
+		if (*nx == node->value.x && *ny == node->value.y) {
+			/* Handle Collisions based off of entity type */
+			switch (node->value.type) {
 				case WALL_T:
 					*nx = player->x + 0;
 					*ny = player->y + 0;
 					break;
 				case PILL_T:
 					*score = *score + 10;
-					remove_entity_from_list(list, temp);
+					remove_entity_from_list(list, node);
 #ifdef LOG
 					fprintf(stderr, "LOG: Score:%d\n", score);
 #endif
@@ -126,16 +127,17 @@ void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *n
 					break;
 			}
 		}
-		mvprintw(temp->value.y, temp->value.x, temp->value.icon);
-		if (temp->next != NULL) {
-			temp2 = temp->next;
-			temp = temp2;
+		mvprintw(node->value.y, node->value.x, node->value.icon);
+		node2 = node->next;
+		if (node2 != NULL) {
+			node  = node2;
 		}
-	} while (temp->next != NULL);
-	temp = NULL;
-	temp2 = NULL;
-	free(temp);
-	free(temp2);
+	} while (node2 != NULL);
+	node  = NULL;
+	node2 = NULL;
+	/* free(temp);
+	   free(temp2);
+	*/
 }
 
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x){
