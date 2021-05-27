@@ -82,39 +82,47 @@ int main(int argc, char *argv[]) {
 		mvprintw(10, 0, "#####");
 		mvprintw(10, 5, "#####");
 		*/
+
+		update_player_s(&player_s, direction);
+		update_delts(&delta_x, &delta_y, direction);
+		next_x = x + delta_x;
+		next_y = y + delta_y;
+		if (next_x >= max_x || next_y >= max_y || next_x < 0 || next_y < 0) {
+			next_x = x + 0;
+			next_y = y + 0;
+		}
+
 		/* Print our walls...*/
 		temp = walls->head;
 		do {
+			if (next_x == temp->value.x && next_y == temp->value.y) {
+				next_x = x + 0;
+				next_y = y + 0;
+			}
 			mvprintw(temp->value.y, temp->value.x, "#");
 			temp2 = temp->next;
 			temp = temp2;
 		} while (temp->next != NULL);
 		temp = powerpills->head;
 		do {
+			if (next_x == temp->value.x && next_y == temp->value.y) {
+				next_x = x + 0;
+				next_y = y + 0;
+			}
 			mvprintw(temp->value.y, temp->value.x, "*");
 			temp2 = temp->next;
 			temp = temp2;
 		} while (temp->next != NULL);
 		wrefresh(stdscr);
 
+		x = next_x;
+		y = next_y;
+
 		usleep(DELAY);
 		if (kbhit()) {
 			char ch = getch();
 			direction = detdir(ch);
 		}
-		update_player_s(&player_s, direction);
-		update_delts(&delta_x, &delta_y, direction);
-
-		next_x = x + delta_x;
-		next_y = y + delta_y;
-
-		if (next_x >= max_x || next_y >= max_y || next_x < 0 || next_y < 0) {
-			next_x = x + 0;
-			next_y = y + 0;
-		}
-
-		x = next_x;
-		y = next_y;
 	}
 
 	endwin();
