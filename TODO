@@ -1,0 +1,9 @@
+Implement a unit testing framework; need to test helper methods.
+	- look into greatest as it is c89 compilant
+
+Break up cman.c into separate files.
+
+Implement some type of ghost enemies; write a different AI for
+each of them.
+
+Add in color support; ncurses has a way to do this?
