@@ -26,17 +26,15 @@ int kbhit(void);
 char detdir(char ch);
 void update_delts(int *dx, int *dy, char direction);
 void update_player_s(char **player_s, char direction);
-void print_hwall(int sx, int ex, int y, char wall_c);
-void print_vwall(int sy, int ey, int x, char wall_c);
 void spawn_power_pellets(int ymax, int xmax);
 void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
-	int x = 0, y = 0;
-	int max_x = 0, max_y = 0;
+	int x       = 0, y       = 0;
+	int max_x   = 0, max_y   = 0;
 	int delta_x = 0, delta_y = 0;
-	int next_x = 0, next_y = 0;
-	int score = 0; /* player score */
+	int next_x  = 0, next_y  = 0;
+	int score   = 0;
 	char direction = 'l'; /*u, d, l, r, n | up down left right none */
 	char *player_s = "o";
 	time_t t; /* used for srand */
@@ -61,27 +59,19 @@ int main(int argc, char *argv[]) {
 
 	getmaxyx(stdscr, max_y, max_x);
 
-	init_entity_list(powerpills, PILL_CHAR, PILL_ICON, max_y, max_x);
-	init_entity_list(walls, WALL_CHAR, WALL_ICON, max_y, max_x);
-
 	/*
 	Now that we have the max coordinates, we can now fill our
 	lists of entities
 	*/
 
+	init_entity_list(powerpills, PILL_CHAR, PILL_ICON, max_y, max_x);
+	init_entity_list(walls, WALL_CHAR, WALL_ICON, max_y, max_x);
 
 	while(1) {
 		/* setup stuff */
 
 		clear();
 		mvprintw(y, x, player_s);
-		/*
-		refresh();
-		box(stdscr, 0, 0);
-		mvprintw(2, 0, "#####");
-		mvprintw(10, 0, "#####");
-		mvprintw(10, 5, "#####");
-		*/
 
 		update_player_s(&player_s, direction);
 		update_delts(&delta_x, &delta_y, direction);
@@ -111,7 +101,7 @@ int main(int argc, char *argv[]) {
 				score = score + 10;
 #ifdef LOG
 				fprintf(stderr, "LOG: Score:%d\n", score);
-#endif /* LOG */
+#endif
 			}
 			mvprintw(temp->value.y, temp->value.x, "*");
 			temp2 = temp->next;
@@ -140,19 +130,19 @@ void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int 
 	int number_entities = 0;
 #ifdef LOG
 	char desc[20];
-#endif /* LOG */
+#endif
 	switch (type) {
 		case PILL_CHAR:
 			number_entities = NUMPOWERPELLETS;
 #ifdef LOG
 			strcpy(desc, "Power Pill");
-#endif /* LOG */
+#endif
 			break;
 		case WALL_CHAR:
 			number_entities = NUMWALLS;
 #ifdef LOG
 			strcpy(desc, "Wall");
-#endif /* LOG */
+#endif
 			break;
 		default:
 			break;
@@ -170,9 +160,8 @@ void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int 
 		new->value.type = type;
 		add_entity_to_list(list, new);
 #ifdef LOG
-		/* LOG */
 		fprintf(stderr, "LOG: Added %s with x:%d and y:%d\n", desc, new->value.x, new->value.y);
-#endif /*DEBUG*/
+#endif
 		new = NULL;
 	}
 
