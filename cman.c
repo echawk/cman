@@ -39,12 +39,14 @@ int main(int argc, char *argv[]) {
 	char *player_s = "o";
 	time_t t; /* used for srand */
 
-	entity_list_node_T *temp = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
+	entity_T *player = (entity_T *) malloc(sizeof(entity_T));
+
+	entity_list_node_T *temp  = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 
 	/* Create the lists for the entities */
-	entity_list_T *walls = (entity_list_T *) malloc(sizeof(entity_list_T));
-	entity_list_T *enemies = (entity_list_T *) malloc(sizeof(entity_list_T));
+	entity_list_T *walls      = (entity_list_T *) malloc(sizeof(entity_list_T));
+	entity_list_T *enemies    = (entity_list_T *) malloc(sizeof(entity_list_T));
 	entity_list_T *powerpills = (entity_list_T *) malloc(sizeof(entity_list_T));
 	walls->head = NULL;
 	enemies->head = NULL;
@@ -65,7 +67,7 @@ int main(int argc, char *argv[]) {
 	*/
 
 	init_entity_list(powerpills, PILL_CHAR, PILL_ICON, max_y, max_x);
-	init_entity_list(walls, WALL_CHAR, WALL_ICON, max_y, max_x);
+	init_entity_list(walls,      WALL_CHAR, WALL_ICON, max_y, max_x);
 
 	while(1) {
 		/* setup stuff */
@@ -122,8 +124,6 @@ int main(int argc, char *argv[]) {
 	endwin();
 	return 0;
 }
-
-
 
 void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x){
 	int i = 0;
