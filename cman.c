@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 				next_x = player->x + 0;
 				next_y = player->y + 0;
 			}
-			mvprintw(temp->value.y, temp->value.x, "#");
+			mvprintw(temp->value.y, temp->value.x, temp->value.icon);
 			temp2 = temp->next;
 			temp = temp2;
 		} while (temp->next != NULL);
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
 				fprintf(stderr, "LOG: Score:%d\n", score);
 #endif
 			}
-			mvprintw(temp->value.y, temp->value.x, "*");
+			mvprintw(temp->value.y, temp->value.x, temp->value.icon);
 			temp2 = temp->next;
 			temp = temp2;
 		} while (temp->next != NULL);
