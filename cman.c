@@ -24,13 +24,13 @@ const char *PILL_ICON  = "*";
 
 int kbhit(void);
 char detdir(char ch);
-void update_player_entity(entity_T *player, int *dy, int *dx, char direction);
+void update_player_entity(entity_T *player, short *dy, short *dx, char direction);
 void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx);
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
 	int max_x   = 0, max_y   = 0;
-	int delta_x = 0, delta_y = 0;
+	short delta_x = 0, delta_y = 0;
 	int next_x  = 0, next_y  = 0;
 	int score   = 0;
 	char direction = 'l'; /*u, d, l, r, n | up down left right none */
@@ -175,7 +175,7 @@ void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int 
 }
 
 
-void update_player_entity(entity_T *player, int *dy, int *dx, char direction) {
+void update_player_entity(entity_T *player, short *dy, short *dx, char direction) {
 	switch(direction) {
 		case 'u':
 			player->icon = "v";
