@@ -27,9 +27,7 @@ void update_player_s(char **player_s, char direction);
 void print_hwall(int sx, int ex, int y, char wall_c);
 void print_vwall(int sy, int ey, int x, char wall_c);
 void spawn_power_pellets(int ymax, int xmax);
-void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int max_x);
-void init_pill_list(entity_list_T *list, int max_y, int max_x);
-void init_wall_list(entity_list_T *list, int max_y, int max_x);
+void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
 	int x = 0,
@@ -139,21 +137,6 @@ int main(int argc, char *argv[]) {
 }
 
 
-void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int max_x) {
-	switch (entity_c) {
-		case 'e':
-			break;
-		case WALL_CHAR:
-			init_wall_list(list, max_y, max_x);
-			break;
-		case PILL_CHAR:
-			init_pill_list(list, max_y, max_x);
-			break;
-		default:
-			break;
-	}
-}
-
 
 void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x){
 	int i = 0;
@@ -184,45 +167,6 @@ void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int 
 		new->value.type = type;
 		add_entity_to_list(list, new);
 		fprintf(stderr, "LOG: Added %s with x:%d and y:%d\n", desc, new->value.x, new->value.y); /* LOG */
-		new = NULL;
-	}
-
-}
-
-/* TODO: refactor; merge init_pill_list and init_wall list, get rid of init_entity_list_values */
-void init_pill_list(entity_list_T *list, int max_y, int max_x) {
-	int i = 0;
-	/* if the list is not empty, return */
-	if (list->head != NULL)
-		return;
-	for (i = 0; i < NUMPOWERPELLETS; i++) {
-		entity_list_node_T* new = (entity_list_node_T*) malloc(sizeof(entity_list_node_T));
-		if (new == NULL)
-			exit(1);
-		new->value.x = (int) rand() % max_x;
-		new->value.y = (int) rand() % max_y;
-		new->value.icon = PILL_ICON;
-		new->value.type = PILL_CHAR;
-		add_entity_to_list(list, new);
-		fprintf(stderr, "LOG: Added Power Pellet with x:%d and y:%d\n", new->value.x, new->value.y); /* LOG */
-		new = NULL;
-	}
-}
-
-void init_wall_list(entity_list_T *list, int max_y, int max_x) {
-	int i = 0;
-	if (list->head != NULL)
-		return;
-	for (i = 0; i < NUMWALLS; i++) {
-		entity_list_node_T* new = (entity_list_node_T*) malloc(sizeof(entity_list_node_T));
-		if (new == NULL)
-			exit(1);
-		new->value.x = (int) rand() % max_x;
-		new->value.y = (int) rand() % max_y;
-		new->value.icon = WALL_ICON;
-		new->value.type = WALL_CHAR;
-		add_entity_to_list(list, new);
-		fprintf(stderr, "LOG: Added Wall with x:%d and y:%d\n", new->value.x, new->value.y); /* LOG */
 		new = NULL;
 	}
 
