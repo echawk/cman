@@ -27,6 +27,7 @@ char detdir(char ch);
 void update_delts(int *dx, int *dy, char direction);
 void update_player_s(char **player_s, char direction);
 void spawn_power_pellets(int ymax, int xmax);
+void update_player_entity(entity_T *player, int *dy, int *dx, char direction);
 void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx);
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x);
 
@@ -74,9 +75,7 @@ int main(int argc, char *argv[]) {
 
 		clear();
 		mvprintw(player->y, player->x, player->icon);
-
-		update_player_s(&player->icon, direction);
-		update_delts(&delta_x, &delta_y, direction);
+		update_player_entity(player, &delta_y, &delta_x, direction);
 		next_x = player->x + delta_x;
 		next_y = player->y + delta_y;
 		if (next_x >= max_x || next_y >= max_y || next_x < 0 || next_y < 0) {
@@ -179,50 +178,34 @@ void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int 
 }
 
 
-/* TODO: merge the update_player_s and update_delts functions */
-
-void update_player_s(char **player_s, char direction) {
+void update_player_entity(entity_T *player, int *dy, int *dx, char direction) {
 	switch(direction) {
 		case 'u':
-			*player_s = "v";
-			break;
-		case 'd':
-			*player_s = "^";
-			break;
-		case 'r':
-			*player_s = "<";
-			break;
-		case 'l':
-			*player_s = ">";
-			break;
-		default:
-			*player_s = "o";
-			break;
-	}
-}
-
-void update_delts(int *dx, int *dy, char direction) {
-	switch(direction) {
-		case 'u':
+			player->icon = "v";
 			*dx = 0;
 			*dy = -1;
 			break;
 		case 'd':
+			player->icon = "^";
 			*dx = 0;
 			*dy = 1;
 			break;
 		case 'r':
+			player->icon = "<";
 			*dx = 1;
 			*dy = 0;
 			break;
 		case 'l':
+			player->icon = ">";
 			*dx = -1;
 			*dy = 0;
 			break;
 		default:
+			player->icon = "o";
 			break;
 	}
 }
+
 
 /* determines the direction the player should be moving, based on a keypress */
 char detdir(char ch){
