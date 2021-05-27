@@ -27,6 +27,7 @@ char detdir(char ch);
 void update_delts(int *dx, int *dy, char direction);
 void update_player_s(char **player_s, char direction);
 void spawn_power_pellets(int ymax, int xmax);
+void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx);
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
@@ -36,10 +37,6 @@ int main(int argc, char *argv[]) {
 	int score   = 0;
 	char direction = 'l'; /*u, d, l, r, n | up down left right none */
 	time_t t; /* used for srand */
-
-
-	entity_list_node_T *temp  = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
-	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 
 	/* Create the lists for the entities */
 	entity_list_T *walls      = (entity_list_T *) malloc(sizeof(entity_list_T));
@@ -89,29 +86,10 @@ int main(int argc, char *argv[]) {
 
 		/* Print our walls...*/
 		/* TODO: refactor; see if these two can be meaningfully merged */
-		temp = walls->head;
-		do {
-			if (next_x == temp->value.x && next_y == temp->value.y) {
-				next_x = player->x + 0;
-				next_y = player->y + 0;
-			}
-			mvprintw(temp->value.y, temp->value.x, temp->value.icon);
-			temp2 = temp->next;
-			temp = temp2;
-		} while (temp->next != NULL);
 
-		temp = powerpills->head;
-		do {
-			if (next_x == temp->value.x && next_y == temp->value.y) {
-				score = score + 10;
-#ifdef LOG
-				fprintf(stderr, "LOG: Score:%d\n", score);
-#endif
-			}
-			mvprintw(temp->value.y, temp->value.x, temp->value.icon);
-			temp2 = temp->next;
-			temp = temp2;
-		} while (temp->next != NULL);
+		print_entity_list(walls,      player, &score, &next_y, &next_x);
+		print_entity_list(powerpills, player, &score, &next_y, &next_x);
+
 		wrefresh(stdscr);
 
 		player->x = next_x;
@@ -126,6 +104,39 @@ int main(int argc, char *argv[]) {
 
 	endwin();
 	return 0;
+}
+
+void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx) {
+	entity_list_node_T *temp = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
+	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
+	temp = list->head;
+	do {
+		switch (temp->value.type) {
+			case WALL_T:
+				if (*nx == temp->value.x && *ny == temp->value.y) {
+					*nx = player->x + 0;
+					*ny = player->y + 0;
+				}
+				break;
+			case PILL_T:
+				if (*nx == temp->value.x && *ny == temp->value.y) {
+					*score = *score + 10;
+#ifdef LOG
+				fprintf(stderr, "LOG: Score:%d\n", score);
+#endif
+				}
+				break;
+			default:
+				break;
+		}
+		mvprintw(temp->value.y, temp->value.x, temp->value.icon);
+		temp2 = temp->next;
+		temp = temp2;
+	} while (temp->next != NULL);
+	temp = NULL;
+	temp2 = NULL;
+	free(temp);
+	free(temp2);
 }
 
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x){
@@ -167,7 +178,6 @@ void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int 
 #endif
 		new = NULL;
 	}
-
 }
 
 
