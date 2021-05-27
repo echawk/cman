@@ -3,6 +3,12 @@
 #include <stdlib.h>
 
 void remove_entity_from_list(entity_list_T *l, entity_list_node_T *entity) {
+	/*
+		 REFACTOR:
+		 I think there is a way to remove one of these temporary
+		 nodes; the one I think we can drop is 'next', as next is always
+		 accessible via 'curr->next'
+	*/
 	entity_list_node_T* curr = l->head;
 	entity_list_node_T* next = curr->next;
 	entity_list_node_T* prev = curr;
