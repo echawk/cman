@@ -24,9 +24,6 @@ const char *PILL_ICON  = "*";
 
 int kbhit(void);
 char detdir(char ch);
-void update_delts(int *dx, int *dy, char direction);
-void update_player_s(char **player_s, char direction);
-void spawn_power_pellets(int ymax, int xmax);
 void update_player_entity(entity_T *player, int *dy, int *dx, char direction);
 void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx);
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x);
