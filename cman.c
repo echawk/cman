@@ -16,9 +16,9 @@
 #define WALL_T  1
 #define PILL_T  2
 
-const char EMEMY_ICON = '@';
-const char WALL_ICON  = '#';
-const char PILL_ICON  = '*';
+const char *EMEMY_ICON = "@";
+const char *WALL_ICON  = "#";
+const char *PILL_ICON  = "*";
 
 /* TODO: move the helper functions to their own header file */
 
@@ -27,19 +27,16 @@ char detdir(char ch);
 void update_delts(int *dx, int *dy, char direction);
 void update_player_s(char **player_s, char direction);
 void spawn_power_pellets(int ymax, int xmax);
-void init_entity_list(entity_list_T *list, int type, char icon, int max_y, int max_x);
+void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
-	int x       = 0, y       = 0;
 	int max_x   = 0, max_y   = 0;
 	int delta_x = 0, delta_y = 0;
 	int next_x  = 0, next_y  = 0;
 	int score   = 0;
 	char direction = 'l'; /*u, d, l, r, n | up down left right none */
-	char *player_s = "o";
 	time_t t; /* used for srand */
 
-	entity_T *player = (entity_T *) malloc(sizeof(entity_T));
 
 	entity_list_node_T *temp  = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
@@ -48,6 +45,12 @@ int main(int argc, char *argv[]) {
 	entity_list_T *walls      = (entity_list_T *) malloc(sizeof(entity_list_T));
 	entity_list_T *enemies    = (entity_list_T *) malloc(sizeof(entity_list_T));
 	entity_list_T *powerpills = (entity_list_T *) malloc(sizeof(entity_list_T));
+
+	entity_T *player = (entity_T *) malloc(sizeof(entity_T));
+	player->x = 0;
+	player->y = 0;
+	player->icon = "o";
+
 	walls->head = NULL;
 	enemies->head = NULL;
 	powerpills->head = NULL;
@@ -66,22 +69,22 @@ int main(int argc, char *argv[]) {
 	lists of entities
 	*/
 
-	init_entity_list(powerpills, PILL_T, PILL_ICON, max_y, max_x);
-	init_entity_list(walls,      WALL_T, WALL_ICON, max_y, max_x);
+	init_entity_list(powerpills, PILL_T, (char*) PILL_ICON, max_y, max_x);
+	init_entity_list(walls,      WALL_T, (char*) WALL_ICON, max_y, max_x);
 
 	while(1) {
 		/* setup stuff */
 
 		clear();
-		mvprintw(y, x, player_s);
+		mvprintw(player->y, player->x, player->icon);
 
-		update_player_s(&player_s, direction);
+		update_player_s(&player->icon, direction);
 		update_delts(&delta_x, &delta_y, direction);
-		next_x = x + delta_x;
-		next_y = y + delta_y;
+		next_x = player->x + delta_x;
+		next_y = player->y + delta_y;
 		if (next_x >= max_x || next_y >= max_y || next_x < 0 || next_y < 0) {
-			next_x = x + 0;
-			next_y = y + 0;
+			next_x = player->x + 0;
+			next_y = player->y + 0;
 		}
 
 		/* Print our walls...*/
@@ -89,8 +92,8 @@ int main(int argc, char *argv[]) {
 		temp = walls->head;
 		do {
 			if (next_x == temp->value.x && next_y == temp->value.y) {
-				next_x = x + 0;
-				next_y = y + 0;
+				next_x = player->x + 0;
+				next_y = player->y + 0;
 			}
 			mvprintw(temp->value.y, temp->value.x, "#");
 			temp2 = temp->next;
@@ -111,8 +114,8 @@ int main(int argc, char *argv[]) {
 		} while (temp->next != NULL);
 		wrefresh(stdscr);
 
-		x = next_x;
-		y = next_y;
+		player->x = next_x;
+		player->y = next_y;
 
 		usleep(DELAY);
 		if (kbhit()) {
@@ -125,7 +128,7 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-void init_entity_list(entity_list_T *list, int type, char icon, int max_y, int max_x){
+void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x){
 	int i = 0;
 	int number_entities = 0;
 #ifdef LOG

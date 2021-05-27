@@ -23,7 +23,7 @@
 typedef struct entity {
 	int x;
 	int y;
-	char icon;
+	char *icon;
 	char type;
 } entity_T;
 
