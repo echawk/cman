@@ -2,13 +2,15 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
-#include <string.h>
-
 #include "game_objs.h"
 
 #define DELAY 30000
 #define NUMPOWERPELLETS 10
 #define NUMWALLS 200
+
+#ifdef LOG
+#include <string.h>
+#endif
 
 const char EMEMY_CHAR = 'e';
 const char WALL_CHAR  = 'w';
@@ -107,7 +109,9 @@ int main(int argc, char *argv[]) {
 		do {
 			if (next_x == temp->value.x && next_y == temp->value.y) {
 				score = score + 10;
-				fprintf(stderr, "LOG: Score:%d\n", score); /* LOG */
+#ifdef LOG
+				fprintf(stderr, "LOG: Score:%d\n", score);
+#endif /* LOG */
 			}
 			mvprintw(temp->value.y, temp->value.x, "*");
 			temp2 = temp->next;
@@ -134,15 +138,21 @@ int main(int argc, char *argv[]) {
 void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x){
 	int i = 0;
 	int number_entities = 0;
+#ifdef LOG
 	char desc[20];
+#endif /* LOG */
 	switch (type) {
 		case PILL_CHAR:
 			number_entities = NUMPOWERPELLETS;
+#ifdef LOG
 			strcpy(desc, "Power Pill");
+#endif /* LOG */
 			break;
 		case WALL_CHAR:
 			number_entities = NUMWALLS;
+#ifdef LOG
 			strcpy(desc, "Wall");
+#endif /* LOG */
 			break;
 		default:
 			break;
@@ -159,7 +169,10 @@ void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int 
 		new->value.icon = icon;
 		new->value.type = type;
 		add_entity_to_list(list, new);
-		fprintf(stderr, "LOG: Added %s with x:%d and y:%d\n", desc, new->value.x, new->value.y); /* LOG */
+#ifdef LOG
+		/* LOG */
+		fprintf(stderr, "LOG: Added %s with x:%d and y:%d\n", desc, new->value.x, new->value.y);
+#endif /*DEBUG*/
 		new = NULL;
 	}
 
