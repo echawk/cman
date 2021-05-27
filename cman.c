@@ -30,21 +30,14 @@ void spawn_power_pellets(int ymax, int xmax);
 void init_entity_list(entity_list_T *list, char type, char icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
-	int x = 0,
-			y = 0;
-	int max_y = 0,
-			max_x = 0;
-	int delta_x = 0,
-			delta_y = 0;
-	int next_x = 0,
-			next_y = 0;
-	char direction = 'l'; /*u, d, l, r, n | up down left right none */
-
-	char *player_s = "o";
-
-	time_t t; /* used for srand */
-
+	int x = 0, y = 0;
+	int max_x = 0, max_y = 0;
+	int delta_x = 0, delta_y = 0;
+	int next_x = 0, next_y = 0;
 	int score = 0; /* player score */
+	char direction = 'l'; /*u, d, l, r, n | up down left right none */
+	char *player_s = "o";
+	time_t t; /* used for srand */
 
 	entity_list_node_T *temp = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
 	entity_list_node_T *temp2 = (entity_list_node_T *) malloc(sizeof(entity_list_node_T));
