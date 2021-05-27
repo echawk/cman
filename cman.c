@@ -9,13 +9,13 @@
 #define NUMPOWERPELLETS 10
 #define NUMWALLS 200
 
-#define EMEMY_CHAR e
-#define WALL_CHAR w
-#define PILL_CHAR p
+const char EMEMY_CHAR = 'e';
+const char WALL_CHAR  = 'w';
+const char PILL_CHAR  = 'p';
 
-#define ENEMY_ICON @
-#define WALL_ICON #
-#define PILL_ICON *
+const char EMEMY_ICON = '@';
+const char WALL_ICON  = '#';
+const char PILL_ICON  = '*';
 
 /* TODO: move the helper functions to their own header file */
 
@@ -67,8 +67,8 @@ int main(int argc, char *argv[]) {
 
 	getmaxyx(stdscr, max_y, max_x);
 
-	init_entity_list_values(powerpills, 'p', max_y, max_x);
-	init_entity_list_values(walls, 'w', max_y, max_x);
+	init_entity_list_values(powerpills, PILL_CHAR, max_y, max_x);
+	init_entity_list_values(walls, WALL_CHAR, max_y, max_x);
 
 	/*
 	Now that we have the max coordinates, we can now fill our
@@ -142,10 +142,10 @@ void init_entity_list_values(entity_list_T *list, char entity_c, int max_y, int 
 	switch (entity_c) {
 		case 'e':
 			break;
-		case 'w':
+		case WALL_CHAR:
 			init_wall_list(list, max_y, max_x);
 			break;
-		case 'p':
+		case PILL_CHAR:
 			init_pill_list(list, max_y, max_x);
 			break;
 		default:
@@ -165,8 +165,8 @@ void init_pill_list(entity_list_T *list, int max_y, int max_x) {
 			exit(1);
 		new->value.x = (int) rand() % max_x;
 		new->value.y = (int) rand() % max_y;
-		new->value.icon = '*';
-		new->value.type = 'p';
+		new->value.icon = PILL_ICON;
+		new->value.type = PILL_CHAR;
 		add_entity_to_list(list, new);
 		fprintf(stderr, "LOG: Added Power Pellet with x:%d and y:%d\n", new->value.x, new->value.y); /* LOG */
 		new = NULL;
@@ -183,8 +183,8 @@ void init_wall_list(entity_list_T *list, int max_y, int max_x) {
 			exit(1);
 		new->value.x = (int) rand() % max_x;
 		new->value.y = (int) rand() % max_y;
-		new->value.icon = '#';
-		new->value.type = 'w';
+		new->value.icon = WALL_ICON;
+		new->value.type = WALL_CHAR;
 		add_entity_to_list(list, new);
 		fprintf(stderr, "LOG: Added Wall with x:%d and y:%d\n", new->value.x, new->value.y); /* LOG */
 		new = NULL;
