@@ -26,6 +26,7 @@ int kbhit(void);
 char detdir(char ch);
 void update_player_entity(entity_T *player, short *dy, short *dx, char direction);
 void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx);
+void set_coordinates(entity_list_node_T *new, int max_y, int max_x, entity_list_T *list);
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
@@ -160,43 +161,45 @@ void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int 
 		entity_list_node_T* new = (entity_list_node_T*) malloc(sizeof(entity_list_node_T));
 		if (new == NULL)
 			exit(1);
-		new->value.x = (int) rand() % max_x;
-		new->value.y = (int) rand() % max_y;
 		new->value.icon = icon;
 		new->value.type = type;
-		switch(type) {
-			case PILL_T:
-				break;
-			case WALL_T:
-				/* if it's the first element, just add it */
-				if (list->head == NULL)
-					break;
-				if ((int) rand() % 10 < 7) {
-					if ((int) rand() % 2 == 0) {
-						new->value.x = list->head->value.x;
-						if (list->head->value.y + 1 > max_y) {
-							new->value.y = list->head->value.y - 1;
-						} else {
-							new->value.y = list->head->value.y + 1;
-						}
-					} else {
-						new->value.y = list->head->value.y;
-						if (list->head->value.x + 1 > max_x) {
-							new->value.x = list->head->value.x - 1;
-						} else {
-							new->value.x = list->head->value.x + 1;
-						}
-					}
-				}
-			default:
-				break;
-		}
+		set_coordinates(new, max_y, max_x, list);
 		add_entity_to_list(list, new);
 		new = NULL;
 	}
 }
 
-
+void set_coordinates(entity_list_node_T *new, int max_y, int max_x, entity_list_T *list) {
+	new->value.x = (int) rand() % max_x;
+	new->value.y = (int) rand() % max_y;
+	switch(new->value.type) {
+		case PILL_T:
+			break;
+		case WALL_T:
+			/* if it's the first element, just add it */
+			if (list->head == NULL)
+				break;
+			if ((int) rand() % 10 < 7) {
+				if ((int) rand() % 2 == 0) {
+					new->value.x = list->head->value.x;
+					if (list->head->value.y + 1 > max_y) {
+						new->value.y = list->head->value.y - 1;
+					} else {
+						new->value.y = list->head->value.y + 1;
+					}
+				} else {
+					new->value.y = list->head->value.y;
+					if (list->head->value.x + 1 > max_x) {
+						new->value.x = list->head->value.x - 1;
+					} else {
+						new->value.x = list->head->value.x + 1;
+					}
+				}
+			}
+		default:
+			break;
+	}
+}
 void update_player_entity(entity_T *player, short *dy, short *dx, char direction) {
 	switch(direction) {
 		case 'u':
