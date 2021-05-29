@@ -10,3 +10,6 @@ Add in color support; ncurses has a way to do this?
 
 Use pthreads and sockets to make the game multithreaded; this will
 require some substantial effort.
+
+Add in a more algorithmic way to spawn walls; maybe have there be a preference for walls to spawn next to each other?
+But not so much that they block off the entire map
