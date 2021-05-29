@@ -6,7 +6,7 @@
 
 #define DELAY 30000
 #define NUMPOWERPELLETS 10
-#define NUMWALLS 200
+#define NUMWALLS 550
 
 #ifdef LOG
 #include <string.h>
@@ -143,21 +143,12 @@ void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *n
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x){
 	int i = 0;
 	int number_entities = 0;
-#ifdef LOG
-	char desc[20];
-#endif
 	switch (type) {
 		case PILL_T:
 			number_entities = NUMPOWERPELLETS;
-#ifdef LOG
-			strcpy(desc, "Power Pill");
-#endif
 			break;
 		case WALL_T:
 			number_entities = NUMWALLS;
-#ifdef LOG
-			strcpy(desc, "Wall");
-#endif
 			break;
 		default:
 			break;
@@ -173,10 +164,34 @@ void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int 
 		new->value.y = (int) rand() % max_y;
 		new->value.icon = icon;
 		new->value.type = type;
+		switch(type) {
+			case PILL_T:
+				break;
+			case WALL_T:
+				/* if it's the first element, just add it */
+				if (list->head == NULL)
+					break;
+				if ((int) rand() % 10 < 7) {
+					if ((int) rand() % 2 == 0) {
+						new->value.x = list->head->value.x;
+						if (list->head->value.y + 1 > max_y) {
+							new->value.y = list->head->value.y - 1;
+						} else {
+							new->value.y = list->head->value.y + 1;
+						}
+					} else {
+						new->value.y = list->head->value.y;
+						if (list->head->value.x + 1 > max_x) {
+							new->value.x = list->head->value.x - 1;
+						} else {
+							new->value.x = list->head->value.x + 1;
+						}
+					}
+				}
+			default:
+				break;
+		}
 		add_entity_to_list(list, new);
-#ifdef LOG
-		fprintf(stderr, "LOG: Added %s with x:%d and y:%d\n", desc, new->value.x, new->value.y);
-#endif
 		new = NULL;
 	}
 }
