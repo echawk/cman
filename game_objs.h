@@ -24,7 +24,7 @@ typedef struct entity {
 	int x;
 	int y;
 	char *icon;
-	char type;
+	int type;
 } entity_T;
 
 
