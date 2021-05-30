@@ -47,4 +47,5 @@ typedef struct entity_list {
 
 void remove_entity_from_list(entity_list_T *l, entity_list_node_T *entity);
 void add_entity_to_list(entity_list_T *l, entity_list_node_T *entity);
+int entity_list_len(entity_list_T *l);
 

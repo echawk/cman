@@ -29,9 +29,18 @@ void remove_entity_from_list(entity_list_T *l, entity_list_node_T *entity) {
 }
 
 void add_entity_to_list(entity_list_T *l, entity_list_node_T *entity_node) {
-	entity_list_node_T* current_head = l->head;
+	entity_list_node_T* prev_head = l->head;
 	l->head = entity_node;
-	l->head->next = current_head;
+	l->head->next = prev_head;
 	return;
 }
 
+int entity_list_len(entity_list_T *l) {
+	int length = 0;
+	entity_list_node_T* curr = l->head;
+	while (curr != NULL) {
+		length++;
+		curr = curr->next;
+	}
+	return length;
+}
