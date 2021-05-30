@@ -62,7 +62,11 @@ int main(int argc, char *argv[]) {
 		/* setup stuff */
 
 		clear();
+		start_color();
+		init_pair(1, COLOR_YELLOW, COLOR_BLACK);
+		attron(COLOR_PAIR(1));
 		mvprintw(player->y, player->x, player->icon);
+		attroff(COLOR_PAIR(1));
 		update_player_entity(player, &delta_y, &delta_x, direction);
 		next_x = player->x + delta_x;
 		next_y = player->y + delta_y;
