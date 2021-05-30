@@ -2,19 +2,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
-#include "game_objs.h"
+#include "game_utils.h"
 
 #define DELAY 30000
-#define NUMPOWERPELLETS 10
-#define NUMWALLS 550
-
-#ifdef LOG
-#include <string.h>
-#endif
-
-#define ENEMY_T 0
-#define WALL_T  1
-#define PILL_T  2
 
 const char *EMEMY_ICON = "@";
 const char *WALL_ICON  = "#";
