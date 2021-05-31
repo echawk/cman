@@ -63,10 +63,10 @@ int main(int argc, char *argv[]) {
 
 		clear();
 		start_color();
-		init_pair(1, COLOR_YELLOW, COLOR_BLACK);
-		attron(COLOR_PAIR(1));
+		init_pair(5, COLOR_YELLOW, COLOR_BLACK);
+		attron(COLOR_PAIR(5));
 		mvprintw(player->y, player->x, player->icon);
-		attroff(COLOR_PAIR(1));
+		attroff(COLOR_PAIR(5));
 		update_player_entity(player, &delta_y, &delta_x, direction);
 		next_x = player->x + delta_x;
 		next_y = player->y + delta_y;
@@ -78,8 +78,15 @@ int main(int argc, char *argv[]) {
 		/* Print our walls...*/
 		/* TODO: refactor; see if these two can be meaningfully merged */
 
+		init_pair(WALL_T, COLOR_BLACK, COLOR_WHITE);
+		attron(COLOR_PAIR(WALL_T));
 		print_entity_list(walls,      player, &score, &next_y, &next_x);
+		attroff(COLOR_PAIR(WALL_T));
+
+		init_pair(PILL_T, COLOR_GREEN, COLOR_BLACK);
+		attron(COLOR_PAIR(COLOR_GREEN));
 		print_entity_list(powerpills, player, &score, &next_y, &next_x);
+		attroff(COLOR_PAIR(COLOR_GREEN));
 
 		wrefresh(stdscr);
 
