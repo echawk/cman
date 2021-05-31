@@ -6,9 +6,9 @@
 
 #define DELAY 30000
 
-const char *EMEMY_ICON = "@";
-const char *WALL_ICON  = "#";
-const char *PILL_ICON  = "*";
+static char *EMEMY_ICON = "@";
+static char *WALL_ICON  = "#";
+static char *PILL_ICON  = "*";
 
 /* TODO: move the helper functions to their own header file */
 
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 		print_entity_list(walls,      player, &score, &next_y, &next_x);
 		attroff(COLOR_PAIR(WALL_T));
 
-		init_pair(PILL_T, COLOR_GREEN, COLOR_BLACK);
+		init_pair(PILL_T, COLOR_BLACK, COLOR_GREEN);
 		attron(COLOR_PAIR(COLOR_GREEN));
 		print_entity_list(powerpills, player, &score, &next_y, &next_x);
 		attroff(COLOR_PAIR(COLOR_GREEN));
