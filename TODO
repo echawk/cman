@@ -16,3 +16,5 @@ But not so much that they block off the entire map
 	- got some initial work on this done.
 
 Document the code! Also go through and refactor after this; there will definitely be some pain points"
+
+Make the types an enum
