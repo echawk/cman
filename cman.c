@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 
 		usleep(DELAY);
 		if (kbhit()) {
-			char ch = getch();
+			char ch = (char) getch();
 			direction = detdir(ch);
 		}
 	}
@@ -122,7 +122,7 @@ char detdir(char ch){
 
 /* returns 1 if a key was pressed, 0 otherwise */
 int kbhit(){
-	int ch = getch();
+	char ch = (char) getch();
 	if (ch != ERR) {
 		ungetch(ch);
 		return 1;
