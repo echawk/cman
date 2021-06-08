@@ -132,7 +132,8 @@ void set_coordinates(entity_list_node_T *new, int max_y, int max_x, entity_list_
 			/* if it's the first element, just add it */
 			if (list->head == NULL)
 				break;
-			if ((int) rand() % 10 < 7) {
+			/* 70 % of the time attach to an already existing node */
+			if ((int) rand() % 10 <= 7) {
 				if ((int) rand() % 2 == 0) {
 					new->value.x = list->head->value.x;
 					if (list->head->value.y + 1 > max_y) {
