@@ -4,13 +4,6 @@
 
 #define NUMPOWERPELLETS 10
 #define NUMWALLS 550
-
-
-#define ENEMY_T 0
-#define WALL_T  1
-#define PILL_T  2
-
-
 /*
 	Inputs:
 	list - a pointer to a linked list of entities

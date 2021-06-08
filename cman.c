@@ -3,10 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include "game_utils.h"
-
 #define DELAY 30000
 
-static char *EMEMY_ICON = "@";
 static char *WALL_ICON  = "#";
 static char *PILL_ICON  = "*";
 
@@ -20,25 +18,32 @@ void set_coordinates(entity_list_node_T *new, int max_y, int max_x, entity_list_
 void init_entity_list(entity_list_T *list, int type, char *icon, int max_y, int max_x);
 
 int main(int argc, char *argv[]) {
-	int max_x   = 0, max_y   = 0;
-	short delta_x = 0, delta_y = 0;
-	int next_x  = 0, next_y  = 0;
-	int score   = 0;
+	int max_x      = 0, max_y   = 0;
+	short delta_x  = 0, delta_y = 0;
+	int next_x     = 0, next_y  = 0;
+	int score      = 0;
 	char direction = 'l'; /*u, d, l, r, n | up down left right none */
 	time_t t; /* used for srand */
 
+	entity_T *redenemy = (entity_T *) malloc(sizeof(entity_T));
+	entity_T *magenemy = (entity_T *) malloc(sizeof(entity_T));
+	entity_T *bluenemy = (entity_T *) malloc(sizeof(entity_T));
+
 	/* Create the lists for the entities */
 	entity_list_T *walls      = (entity_list_T *) malloc(sizeof(entity_list_T));
-	entity_list_T *enemies    = (entity_list_T *) malloc(sizeof(entity_list_T));
+	/* entity_list_T *enemies    = (entity_list_T *) malloc(sizeof(entity_list_T)); */
 	entity_list_T *powerpills = (entity_list_T *) malloc(sizeof(entity_list_T));
 
 	entity_T *player = (entity_T *) malloc(sizeof(entity_T));
-	player->x = 0;
-	player->y = 0;
+
+	/* All variables are now declared. Now initialize. */
+
+	player->x    = 0;
+	player->y    = 0;
 	player->icon = "o";
 
 	walls->head = NULL;
-	enemies->head = NULL;
+	/* enemies->head = NULL; */
 	powerpills->head = NULL;
 
 	srand((unsigned) time(&t));
@@ -54,6 +59,22 @@ int main(int argc, char *argv[]) {
 	Now that we have the max coordinates, we can now fill our
 	lists of entities
 	*/
+/*
+	redenemy->x    = (int) rand() % max_x;
+	redenemy->y    = (int) rand() % max_y;
+	redenemy->icon = (char) ENEMY_ICON;
+*/
+	redenemy->x    = 10;
+	redenemy->y    = 10;
+	redenemy->icon = "@";
+
+	magenemy->x    = 15;
+	magenemy->y    = 15;
+	magenemy->icon = "@";
+
+	bluenemy->x    = 10;
+	bluenemy->y    = 15;
+	bluenemy->icon = "@";
 
 	init_entity_list(powerpills, PILL_T, (char*) PILL_ICON, max_y, max_x);
 	init_entity_list(walls,      WALL_T, (char*) WALL_ICON, max_y, max_x);
@@ -88,8 +109,22 @@ int main(int argc, char *argv[]) {
 		print_entity_list(powerpills, player, &score, &next_y, &next_x);
 		attroff(COLOR_PAIR(COLOR_GREEN));
 
-		wrefresh(stdscr);
+		init_pair(100, COLOR_BLACK, COLOR_RED);
+		attron(COLOR_PAIR(100));
+		mvprintw(redenemy->y, redenemy->x, redenemy->icon);
+		attroff(COLOR_PAIR(100));
 
+		init_pair(101, COLOR_BLACK, COLOR_MAGENTA);
+		attron(COLOR_PAIR(101));
+		mvprintw(magenemy->y, magenemy->x, magenemy->icon);
+		attroff(COLOR_PAIR(101));
+
+		init_pair(102, COLOR_BLACK, COLOR_BLUE);
+		attron(COLOR_PAIR(102));
+		mvprintw(bluenemy->y, bluenemy->x, bluenemy->icon);
+		attroff(COLOR_PAIR(102));
+
+		wrefresh(stdscr);
 		player->x = next_x;
 		player->y = next_y;
 

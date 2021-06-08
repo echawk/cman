@@ -1,13 +1,8 @@
+#pragma once
 #include "game_objs.h"
 
 #define NUMPOWERPELLETS 10
 #define NUMWALLS 550
-
-
-#define ENEMY_T 0
-#define WALL_T  1
-#define PILL_T  2
-
 
 void update_player_entity(entity_T *player, short *dy, short *dx, char direction);
 void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *ny, int *nx);

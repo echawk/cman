@@ -1,3 +1,4 @@
+#pragma once
 /*
 	Types to define:
 	Enemy     (Entity)
@@ -19,6 +20,9 @@
 	since the size is likely to be quite small (less than 1000), and the ease of implementation.
 */
 
+#define ENEMY_T 0
+#define WALL_T  1
+#define PILL_T  2
 
 typedef struct entity {
 	int x;
