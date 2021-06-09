@@ -1,6 +1,7 @@
 #include "game_utils.h"
 #include <stdlib.h>
 #include <ncurses.h>
+#include <math.h>
 
 #define NUMPOWERPELLETS 10
 #define NUMWALLS 550
@@ -187,4 +188,10 @@ void update_player_entity(entity_T *player, short *dy, short *dx, char direction
 			player->icon = "o";
 			break;
 	}
+}
+
+double calc_distance_between_entities(entity_T *en1, entity_T *en2) {
+	if (en1 == NULL || en2 == NULL)
+		return -1;
+	return sqrt((pow((en1->x - en2->x), 2) + pow((en1->y - en2->y), 2))
 }
