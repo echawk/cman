@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "game_utils.h"
+#include "enemy_utils.h"
 #define DELAY 30000
 
 static char *WALL_ICON  = "#";
@@ -111,6 +112,7 @@ int main(int argc, char *argv[]) {
 
 		init_pair(100, COLOR_BLACK, COLOR_RED);
 		attron(COLOR_PAIR(100));
+		update_redenemy_entity(redenemy, max_y, max_x);
 		mvprintw(redenemy->y, redenemy->x, redenemy->icon);
 		attroff(COLOR_PAIR(100));
 
