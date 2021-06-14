@@ -14,7 +14,7 @@ void update_redenemy_entity(entity_T *entity, int max_y, int max_x) {
 	} else {
 		dx = 1;
 		if (entity->x + dx > max_y) {
-			dx = -1;
+			dx = 0;
 		}
 	}
 
@@ -27,7 +27,7 @@ void update_redenemy_entity(entity_T *entity, int max_y, int max_x) {
 	} else {
 		dy = 1;
 		if (entity->y + dy > max_y) {
-			dx = -1;
+			dx = 0;
 		}
 	}
 
@@ -38,8 +38,24 @@ void update_redenemy_entity(entity_T *entity, int max_y, int max_x) {
 /*
 	Magenta is going to go directly towards the player
 */
-void update_magenemy_entity(entity_T *entity, entity_T *player, int max_y, int max_x) {
-
+void update_magenemy_entity(entity_T *entity, entity_T *player) {
+	int dx, dy;
+	if (entity->x > player->x) {
+		dx = -1;
+	} else if (entity->x < player->x) {
+		dx = 1;
+	} else {
+		dx =0;
+	}
+	if (entity->y > player->y) {
+		dy = -1;
+	} else if (entity->y < player->y) {
+		dy = 1;
+	} else {
+		dy =0;
+	}
+	entity->y = entity->y + dy;
+	entity->x = entity->x + dx;
 }
 
 /*

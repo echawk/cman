@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
 	int score      = 0;
 	char direction = 'l'; /*u, d, l, r, n | up down left right none */
 	time_t t; /* used for srand */
+	unsigned long tick = 0;
 
 	entity_T *redenemy = (entity_T *) malloc(sizeof(entity_T));
 	entity_T *magenemy = (entity_T *) malloc(sizeof(entity_T));
@@ -112,12 +113,15 @@ int main(int argc, char *argv[]) {
 
 		init_pair(100, COLOR_BLACK, COLOR_RED);
 		attron(COLOR_PAIR(100));
-		update_redenemy_entity(redenemy, max_y, max_x);
+		if (tick % 3 == 0)
+			update_redenemy_entity(redenemy, max_y, max_x);
 		mvprintw(redenemy->y, redenemy->x, redenemy->icon);
 		attroff(COLOR_PAIR(100));
 
 		init_pair(101, COLOR_BLACK, COLOR_MAGENTA);
 		attron(COLOR_PAIR(101));
+		if (tick % 5 == 0)
+			update_magenemy_entity(magenemy, player);
 		mvprintw(magenemy->y, magenemy->x, magenemy->icon);
 		attroff(COLOR_PAIR(101));
 
@@ -135,6 +139,7 @@ int main(int argc, char *argv[]) {
 			char ch = (char) getch();
 			direction = detdir(ch);
 		}
+		tick++;
 	}
 
 	endwin();
