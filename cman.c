@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 		start_color();
 		init_pair(5, COLOR_YELLOW, COLOR_BLACK);
 		attron(COLOR_PAIR(5));
-		mvprintw(player->y, player->x, player->icon);
+		mvprintw(player->y, player->x, "%s", player->icon);
 		attroff(COLOR_PAIR(5));
 		update_player_entity(player, &delta_y, &delta_x, direction);
 		next_x = player->x + delta_x;
@@ -115,19 +115,19 @@ int main(int argc, char *argv[]) {
 		attron(COLOR_PAIR(100));
 		if (tick % 3 == 0)
 			update_redenemy_entity(redenemy, max_y, max_x);
-		mvprintw(redenemy->y, redenemy->x, redenemy->icon);
+		mvprintw(redenemy->y, redenemy->x, "%s", redenemy->icon);
 		attroff(COLOR_PAIR(100));
 
 		init_pair(101, COLOR_BLACK, COLOR_MAGENTA);
 		attron(COLOR_PAIR(101));
 		if (tick % 5 == 0)
 			update_magenemy_entity(magenemy, player);
-		mvprintw(magenemy->y, magenemy->x, magenemy->icon);
+		mvprintw(magenemy->y, magenemy->x, "%s", magenemy->icon);
 		attroff(COLOR_PAIR(101));
 
 		init_pair(102, COLOR_BLACK, COLOR_BLUE);
 		attron(COLOR_PAIR(102));
-		mvprintw(bluenemy->y, bluenemy->x, bluenemy->icon);
+		mvprintw(bluenemy->y, bluenemy->x, "%s", bluenemy->icon);
 		attroff(COLOR_PAIR(102));
 
 		wrefresh(stdscr);
