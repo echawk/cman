@@ -47,7 +47,7 @@ void print_entity_list(entity_list_T *list, entity_T *player, int *score, int *n
 					break;
 			}
 		}
-		mvprintw(node->value.y, node->value.x, node->value.icon);
+		mvprintw(node->value.y, node->value.x, "%s", node->value.icon);
 		node2 = node->next;
 		if (node2 != NULL) {
 			node  = node2;
