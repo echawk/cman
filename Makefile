@@ -1,7 +1,7 @@
 .POSIX:
 .PHONY: clean test
 CC=gcc
-LDFLAGS:=$(LDFLAGS) -lncurses
+LDFLAGS:=$(LDFLAGS) -lncurses -lm
 CFLAGS:=$(CFLAGS) -std=c89 -Wall -pedantic -D_BSD_SOURCE
 SRCS=$(wildcard *.c)
 OBJS=$(SRCS:.c=.o)
